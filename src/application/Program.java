@@ -21,41 +21,18 @@ public class Program {
 		
 		try{
 			conn = DB.getConnection();
-			// st = conn.prepareStatement(
-			// 	"INSERT INTO seller "
-			// 	+"(Name, Email, BirthDate, BaseSalary, DepartmentId) "
-			// 	+"VALUES "
-			// 	+"(?, ?, ?, ?, ?)",
-			// 	Statement.RETURN_GENERATED_KEYS);	
-			// st.setString(1, "Greg");
-			// st.setString(2, "sdd@exemplo.com");
-			// st.setDate(3, new java.sql.Date(sdf.parse("22/07/1991").getTime()));
-			// st.setDouble(4, 2000.0);
-			// st.setInt(5, 1);
-
+			
 			st = conn.prepareStatement(
-				"INSERT INTO department "
-				+"(Name) "
-				+"VALUES "
-				+"(?),(?)",
-				Statement.RETURN_GENERATED_KEYS);
-			st.setString(1, "D1");
-			st.setString(2, "D2");
+				"UPDATE seller "
+				+"SET BaseSalary = BaseSalary + ? "
+				+"WHERE "
+				+"(DepartmentId = ?)");
+			st.setDouble(1, 200.0);
+			st.setInt(2, 2);
 
 			int rowsAffected = st.executeUpdate();
+			System.out.println("Done! Rows affected: " + rowsAffected);
 
-			if(rowsAffected > 0) {
-				ResultSet rs = st.getGeneratedKeys();
-
-				while (rs.next()) {
-					int id = rs.getInt(1);
-					System.out.println("Done! Id = " + id);
-					
-				}
-				System.out.println("Done! Rows affected: " + rowsAffected);}
-			else {
-				System.out.println("No rows affected!");
-			}
 
 		}catch(SQLException e) {
 			e.printStackTrace();
